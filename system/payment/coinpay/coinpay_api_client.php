@@ -38,6 +38,7 @@ class CoinpayApiClient
             'callback'    => $request->callback,
             'amount'      => $request->amount,
             'currency_from'    => $request->currency,
+            'currenty_to' => $request->currency_to,
             'order_label' => $request->order_label
         ]);
     }

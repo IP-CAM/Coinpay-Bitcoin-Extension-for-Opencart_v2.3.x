@@ -5,6 +5,7 @@ class PaymentDetailsRequest
     public $callback;
     public $amount;
     public $currency;
+    public $currency_to;
     public $order_label;
 
     /**
@@ -14,11 +15,12 @@ class PaymentDetailsRequest
      * @param string $currency
      * @param string $order_label
      */
-    public function __construct($callback, $amount, $currency, $order_label) // if you are changing parameters - don't forget about hash()! it must include all of them!
+    public function __construct($callback, $amount, $currency, $currency_to, $order_label) // if you are changing parameters - don't forget about hash()! it must include all of them!
     {
         $this->callback    = $callback;
         $this->amount      = $amount;
         $this->currency    = $currency;
+        $this->currency_to    = $currency_to;
         $this->order_label = $order_label;
     }
 
@@ -31,6 +33,7 @@ class PaymentDetailsRequest
             $this->callback
             . $this->amount
             . $this->currency
+            . $this->currency_to
             . $this->order_label
         );
     }

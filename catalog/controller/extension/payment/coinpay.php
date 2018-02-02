@@ -2,7 +2,7 @@
 require_once(DIR_SYSTEM . 'payment/coinpay/coinpay_api_client.php');
 class Controllerextensionpaymentcoinpay extends Controller {
 	private $payment_module_name  = 'coinpay';
-	private $api, $order, $moduledata;
+	private $api, $order, $moduledata, $cryptocurrencies;
 
 	function init($load_order = true){
 		$this->load->model('checkout/order');
@@ -12,6 +12,7 @@ class Controllerextensionpaymentcoinpay extends Controller {
 
     $this->api_id = $this->config->get($this->payment_module_name.'_api_id');
 		$this->api = new CoinpayApiClient($this->api_id);
+    $this->cryptocurrencies = $this->config->get($this->payment_module_name.'_cryptocurrencies');
 
 		$this->moduledata['enabled'] = true;
 		if(!$this->api){
@@ -40,6 +41,7 @@ class Controllerextensionpaymentcoinpay extends Controller {
         HTTPS_SERVER . 'index.php?route=extension/payment/coinpay/callback',
         $this->order['total'],
         $this->order['currency_code'],
+        $this->cryptocurrencies,
         'Payment on Open Cart'
       );
 
@@ -129,7 +131,7 @@ class Controllerextensionpaymentcoinpay extends Controller {
     $this->add_expected_amount_note();
 
     if( $result->payment_received === false ) {
-      $json['error'] = "Did you already pay it? We don't see the payment.";
+      $json['error'] = "Did you already pay it? We still did not see your payment! It can take a few seconds for your payment to appear. If you already paid - press COMPLETE ORDER button again.";
       return $this->json_response($json);
     }
 
